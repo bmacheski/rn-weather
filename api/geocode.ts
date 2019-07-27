@@ -1,4 +1,4 @@
-import { LocationResult } from '../types'
+import { LocationResult } from '../types/geocode'
 import { GEOCODE_API_KEY as api_key } from 'react-native-dotenv'
 
 export async function autocomplete(query: string) {

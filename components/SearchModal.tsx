@@ -1,7 +1,7 @@
 import * as _ from 'lodash'
 import * as GeocodeApi from '../api/geocode'
 import React from 'react'
-import { LocationResult } from '../types'
+import { LocationResult } from '../types/geocode'
 import { useWeather } from '../providers/WeatherProvider'
 import { Ionicons } from '@expo/vector-icons'
 import { TouchableOpacity } from 'react-native-gesture-handler'

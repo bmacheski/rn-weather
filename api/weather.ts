@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import { Weather } from '../types'
+import { Weather } from '../types/weather'
 import { DARK_SKY_API_KEY as api_key } from 'react-native-dotenv'
 
 export async function getCurrentConditions(lat: number, long: number) {

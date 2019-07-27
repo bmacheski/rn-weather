@@ -2,7 +2,7 @@ import DailyForecastItem from '../components/DailyForecastItem'
 import Forecast from '../components/Forecast'
 import React from 'react'
 import WeatherContainer from '../containers/WeatherContainer'
-import { DailyDatum } from '../types'
+import { DailyDatum } from '../types/weather'
 import { useWeather } from '../providers/WeatherProvider'
 import { ScrollView } from 'react-native-gesture-handler'
 

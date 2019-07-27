@@ -2,7 +2,7 @@ import * as _ from 'lodash'
 import Conditions from '../components/Conditions'
 import React from 'react'
 import WeatherContainer from '../containers/WeatherContainer'
-import { Currently } from '../types'
+import { Currently } from '../types/weather'
 import { useWeather } from '../providers/WeatherProvider'
 
 function TodayScreen() {

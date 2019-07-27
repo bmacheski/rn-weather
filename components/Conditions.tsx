@@ -24,7 +24,7 @@ const Conditions = React.memo((props: ConditionsProps) => {
             <WeatherIcon size={80} name={icon} />
           </View>
           <View>
-            <Text style={{ fontSize: 30, color: 'white' }}>
+            <Text style={styles.rainchance}>
               There is a {Math.round(rainChance)}% chance of rain today.
             </Text>
           </View>
@@ -54,6 +54,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'column',
     flex: 1,
+  },
+  rainchance: {
+    fontSize: 30,
+    color: 'white',
   },
   temperaturerow: {
     flexDirection: 'row',
