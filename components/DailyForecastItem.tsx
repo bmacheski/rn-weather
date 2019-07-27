@@ -1,36 +1,37 @@
-import * as _ from 'lodash'
 import moment from 'moment'
 import React from 'react'
 import Temperature from './Temperature'
 import WeatherIcon from './WeatherIcon'
-import { DailyDatum } from '../types'
 import { Feather } from '@expo/vector-icons'
 import { StyleSheet, Text, View } from 'react-native'
 
 interface DailyForecastItemProps {
-  item: DailyDatum
+  temperatureHigh: number
+  temperatureLow: number
+  icon: string
+  time: number
 }
 
-function DailyForecastItem(props: DailyForecastItemProps) {
-  const { item } = props
+const DailyForecastItem = React.memo((props: DailyForecastItemProps) => {
+  const { temperatureHigh, temperatureLow, icon, time } = props
 
   return (
     <View style={styles.container}>
       <View style={styles.dayContainer}>
-        <Text style={styles.text}>{moment.unix(item.time).format('dddd')}</Text>
+        <Text style={styles.text}>{moment.unix(time).format('dddd')}</Text>
       </View>
       <View style={[styles.iconContainer, { alignItems: 'center' }]}>
-        <WeatherIcon name={item.icon} />
+        <WeatherIcon name={icon} />
         <Text style={[styles.text]}>
           <Feather name="arrow-up" />
-          <Temperature degrees={item.temperatureHigh} />{' '}
+          <Temperature degrees={temperatureHigh} />{' '}
           <Feather name="arrow-down" />
-          <Temperature degrees={item.temperatureLow} />
+          <Temperature degrees={temperatureLow} />
         </Text>
       </View>
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {

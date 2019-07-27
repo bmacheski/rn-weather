@@ -154,3 +154,27 @@ export enum OsmType {
   Relation = 'relation',
   Way = 'way',
 }
+
+// Reverse lookup
+export interface LocationLookup {
+  address: LocationLookupAddress
+  boundingbox: string[]
+  display_name: string
+  importance: number
+  lat: string
+  licence: string
+  lon: string
+  place_id: string
+}
+
+export interface LocationLookupAddress {
+  city: string
+  country: string
+  country_code: string
+  county: string
+  house_number: string
+  neighbourhood: string
+  postcode: string
+  road: string
+  state: string
+}

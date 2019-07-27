@@ -2,7 +2,9 @@ import * as _ from 'lodash'
 import * as GeocodeApi from '../api/geocode'
 import React from 'react'
 import { LocationResult } from '../types'
+import { useWeather } from '../providers/WeatherProvider'
 import { Ionicons } from '@expo/vector-icons'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import {
   Modal,
   StyleSheet,
@@ -18,6 +20,8 @@ interface SearchModalProps {
 }
 
 function SearchModal(props: SearchModalProps) {
+  const { setCoordinates } = useWeather()
+
   const [results, setResults] = React.useState<LocationResult[]>([])
 
   const [input, setInput] = React.useState<string>('')
@@ -25,21 +29,36 @@ function SearchModal(props: SearchModalProps) {
   const { visible, onToggleModal } = props
 
   async function handleInputChange() {
-    // TODO: Ignore whitespace
-    if ((input && input.length < 5) || !input) return
+    if (!/^\w+$/.test(input) || !input || (input && input.length < 5)) return
     try {
       const res = await GeocodeApi.autocomplete(input)
-      setResults(res)
+      const geocodedResults = res && res.length ? res : []
+      setResults(geocodedResults)
     } finally {
     }
+  }
+
+  function onCitySelect(lat: string, long: string) {
+    const latitude = +lat
+    const longitude = +long
+    setCoordinates({ latitude, longitude })
+    onToggleModal()
+  }
+
+  function renderSearchItem(item: LocationResult) {
+    return (
+      <Text style={styles.searchItem}>
+        {item.address.name}, {item.address.city}, {item.address.state}
+      </Text>
+    )
   }
 
   React.useEffect(() => {
     handleInputChange()
   }, [input])
 
-  function renderSearchBarRow() {
-    return (
+  return (
+    <Modal animationType="slide" transparent={false} visible={visible}>
       <View style={styles.container}>
         <View style={styles.searchRow}>
           <Ionicons name="md-search" size={26} styles={styles.searchIcon} />
@@ -47,7 +66,7 @@ function SearchModal(props: SearchModalProps) {
             placeholderTextColor="#999"
             placeholder="Enter a zip or city name"
             value={input}
-            onChangeText={text => setInput(text)}
+            onChangeText={setInput}
             underlineColorAndroid="#fff"
             autoCorrect={false}
             style={styles.searchInput}
@@ -62,22 +81,17 @@ function SearchModal(props: SearchModalProps) {
         </View>
         <View style={styles.searchResults}>
           <FlatList
-            data={results}
+            data={results || []}
             keyExtractor={(_, index) => 'item' + index}
             renderItem={({ item }) => (
-              <Text style={styles.searchItem}>
-                {item.address.name}, {item.address.city}, {item.address.state}
-              </Text>
+              <TouchableOpacity
+                onPress={() => onCitySelect(item.lat, item.lon)}>
+                {renderSearchItem(item)}
+              </TouchableOpacity>
             )}
           />
         </View>
       </View>
-    )
-  }
-
-  return (
-    <Modal animationType="slide" transparent={false} visible={visible}>
-      {renderSearchBarRow()}
     </Modal>
   )
 }

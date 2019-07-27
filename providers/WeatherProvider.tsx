@@ -1,57 +1,70 @@
+import * as _ from 'lodash'
+import * as GeocodeApi from '../api/geocode'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import * as WeatherApi from '../api/weather'
 import React from 'react'
-import { Weather } from '../types'
+import { LocationLookup, Weather } from '../types'
 
-export interface WeatherProviderProps {
+interface WeatherProviderProps {
   children?: React.ReactNode
 }
 
-export interface WeatherProviderState {
+interface WeatherProviderState {
+  error: string
   loading: boolean
   weather: Partial<Weather>
+  location: Partial<LocationLookup>
+  setCoordinates: React.Dispatch<React.SetStateAction<Partial<Coordinates>>>
 }
 
 const defaultValue: WeatherProviderState = {
+  error: '',
   loading: false,
-  weather: {},
+  weather: {
+    currently: null,
+  },
+  location: {},
+  setCoordinates: _.noop,
 }
 
-export const WeatherContext = React.createContext<WeatherProviderState>(
-  defaultValue,
-)
+const WeatherContext = React.createContext<WeatherProviderState>(defaultValue)
 
-/**
- * This should probably be extracted to hooks. A provider is really unncecessary.
- */
 export function WeatherProvider(props: WeatherProviderProps) {
   const [coordinates, setCoordinates] = React.useState<Partial<Coordinates>>({})
 
   const [forecast, setForecast] = React.useState<Partial<Weather>>({})
 
+  const [location, setLocation] = React.useState<Partial<LocationLookup>>({})
+
   const [loading, setLoading] = React.useState<boolean>(false)
+
+  const [error, setError] = React.useState<string>('')
 
   async function geolocate() {
     let { status } = await Permissions.askAsync(Permissions.LOCATION)
     if (status !== 'granted') {
-      console.log('Permission to access location was denied!')
+      setError('Permission to access location was denied!')
     }
 
     let location = await Location.getCurrentPositionAsync({})
     setCoordinates(location.coords)
   }
 
-  async function getForecast() {
+  async function intializeWeather() {
     if (!coordinates.latitude || !coordinates.longitude) return
+
     try {
       setLoading(true)
-      const weather = await WeatherApi.getCurrentConditions(
-        coordinates.latitude,
-        coordinates.longitude,
-      )
+
+      const { latitude, longitude } = coordinates
+      const weather = await WeatherApi.getCurrentConditions(latitude, longitude)
       setForecast(weather)
+
+      const locationDetails = await GeocodeApi.lookup(latitude, longitude)
+      setLocation(locationDetails)
     } catch (err) {
+      setError('Uh oh. An error occurred.')
     } finally {
       setLoading(false)
     }
@@ -59,7 +72,10 @@ export function WeatherProvider(props: WeatherProviderProps) {
 
   function getWeatherConsumerState() {
     return {
+      error,
+      location,
       loading,
+      setCoordinates,
       weather: forecast,
     }
   }
@@ -69,7 +85,7 @@ export function WeatherProvider(props: WeatherProviderProps) {
   }, [])
 
   React.useEffect(() => {
-    getForecast()
+    intializeWeather()
   }, [coordinates.latitude, coordinates.longitude])
 
   return (

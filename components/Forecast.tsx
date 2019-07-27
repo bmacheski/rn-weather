@@ -1,31 +1,33 @@
-import * as _ from 'lodash'
-import React from 'react'
+import React, { ReactNode, ReactElement } from 'react'
 import { FlatList, StyleSheet, Text } from 'react-native'
 
 interface ForecastProps {
-  dailyItems: any[]
+  forecastItems: any[]
   title: string
-  forecastItem: React.ElementType
+  renderItem: (item: any) => ReactElement
 }
 
 function Forecast(props: ForecastProps) {
-  const { forecastItem: ForecastItem } = props
   function renderHeader() {
     return <Text style={styles.text}>{props.title} Forecast</Text>
   }
 
   return (
     <FlatList
-      data={props.dailyItems}
+      data={props.forecastItems}
       ListHeaderComponent={renderHeader()}
       keyExtractor={(_, index) => 'forecast' + index}
-      renderItem={({ item }) => <ForecastItem item={item} />}
+      renderItem={props.renderItem}
     />
   )
 }
 
 const styles = StyleSheet.create({
-  text: { color: 'white', paddingHorizontal: 30, fontSize: 30 },
+  text: {
+    color: 'white',
+    paddingHorizontal: 30,
+    fontSize: 30,
+  },
 })
 
 export default Forecast

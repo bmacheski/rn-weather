@@ -1,51 +1,62 @@
-import * as _ from 'lodash'
 import React from 'react'
-import WeatherIcon from './WeatherIcon'
-import { Currently } from '../types'
-import { StyleSheet, Text, View } from 'react-native'
 import Temperature from './Temperature'
+import WeatherIcon from './WeatherIcon'
+import { StyleSheet, Text, View } from 'react-native'
 
 interface ConditionsProps {
-  conditions: Currently
+  icon: string
+  rainChance: number
+  temperature: number
 }
 
-function Conditions(props: ConditionsProps) {
-  const { conditions } = props
+const Conditions = React.memo((props: ConditionsProps) => {
+  const { icon, rainChance, temperature } = props
+
   return (
     <View style={styles.container}>
-      <Text style={[styles.text]}>Today</Text>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-        }}>
-        <Text style={[styles.text, styles.currentTemp]}>
-          <Temperature degrees={conditions.temperature} />
-        </Text>
-        <WeatherIcon name={conditions.icon} />
-      </View>
-      <View>
-        <Text style={{ fontSize: 30, color: 'white', flexGrow: 10 }}>
-          There is a {Math.round(props.conditions.precipProbability)}% chance of
-          rain today.
-        </Text>
+      <Text style={[styles.text, { fontSize: 40 }]}>Today</Text>
+      <View style={styles.contentwrapper}>
+        <View style={styles.content}>
+          <View style={styles.temperaturerow}>
+            <Text style={[styles.text, styles.currentTemp]}>
+              <Temperature degrees={temperature} />
+            </Text>
+            <WeatherIcon size={80} name={icon} />
+          </View>
+          <View>
+            <Text style={{ fontSize: 30, color: 'white' }}>
+              There is a {Math.round(rainChance)}% chance of rain today.
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 30,
-    marginBottom: 20,
   },
   currentTemp: {
     fontSize: 50,
-    flex: 2,
+    flex: 1,
   },
   iconImage: {
     fontSize: 60,
     color: 'white',
+  },
+  content: {
+    alignContent: 'center',
+  },
+  contentwrapper: {
+    justifyContent: 'center',
+    flexDirection: 'column',
+    flex: 1,
+  },
+  temperaturerow: {
+    flexDirection: 'row',
   },
   text: { color: 'white' },
 })

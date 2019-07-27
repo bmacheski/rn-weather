@@ -1,28 +1,19 @@
-import * as _ from 'lodash'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { StyleSheet, Text, View } from 'react-native'
 
 interface ConditionsHeaderProps {
   toggleSearchModal: () => void
+  name: string
 }
 
-function ConditionsHeader(props: ConditionsHeaderProps) {
+const ConditionsHeader = React.memo((props: ConditionsHeaderProps) => {
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'flex-end',
-        }}>
-        <Text
-          style={{
-            color: 'white',
-            fontSize: 20,
-            alignContent: 'center',
-          }}>
-          {/* {name} */}
-        </Text>
+      <View style={styles.citywrapper}>
+        <Text style={styles.city}>{props.name}</Text>
+      </View>
+      <View style={styles.buttonwrapper}>
         <Ionicons
           name="md-add"
           onPress={props.toggleSearchModal}
@@ -32,7 +23,7 @@ function ConditionsHeader(props: ConditionsHeaderProps) {
       </View>
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   container: {
@@ -42,6 +33,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: 'blue',
     flex: 2,
+    flexDirection: 'row',
+  },
+  city: {
+    color: 'white',
+    fontSize: 20,
+  },
+  citywrapper: {
+    alignContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+  buttonwrapper: {
+    justifyContent: 'flex-end',
   },
 })
 

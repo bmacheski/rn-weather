@@ -1,47 +1,23 @@
 import * as _ from 'lodash'
 import Conditions from '../components/Conditions'
 import React from 'react'
-import WeatherContainer from '../components/WeatherContainer'
+import WeatherContainer from '../containers/WeatherContainer'
+import { Currently } from '../types'
 import { useWeather } from '../providers/WeatherProvider'
-import { ActivityIndicator, StyleSheet, View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
 
 function TodayScreen() {
-  const { weather, loading } = useWeather()
+  const { weather } = useWeather()
+  const { currently = {} as Currently } = weather
 
   return (
     <WeatherContainer>
-      {loading ? (
-        <ActivityIndicator
-          size="large"
-          color="#white"
-          style={styles.loadingIndicator}
-        />
-      ) : (
-        <View>
-          <ScrollView>
-            {!_.isEmpty(weather) && (
-              <View style={{ flex: 10 }}>
-                <Conditions conditions={weather.currently} />
-              </View>
-            )}
-          </ScrollView>
-        </View>
-      )}
+      <Conditions
+        icon={currently.icon || ''}
+        rainChance={currently.precipProbability}
+        temperature={currently.temperature}
+      />
     </WeatherContainer>
   )
 }
-
-const styles = StyleSheet.create({
-  currentTemp: {
-    fontSize: 50,
-  },
-  loadingIndicator: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  text: { color: 'white' },
-})
 
 export default TodayScreen

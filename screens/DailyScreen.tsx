@@ -1,21 +1,32 @@
-import * as _ from 'lodash'
 import DailyForecastItem from '../components/DailyForecastItem'
 import Forecast from '../components/Forecast'
 import React from 'react'
-import WeatherContainer from '../components/WeatherContainer'
+import WeatherContainer from '../containers/WeatherContainer'
+import { DailyDatum } from '../types'
 import { useWeather } from '../providers/WeatherProvider'
 import { ScrollView } from 'react-native-gesture-handler'
 
 function DailyScreen() {
   const { weather } = useWeather()
 
+  function renderDailyItem({ item }: { item: DailyDatum }) {
+    return (
+      <DailyForecastItem
+        icon={item.icon}
+        time={item.time}
+        temperatureHigh={item.temperatureHigh}
+        temperatureLow={item.temperatureLow}
+      />
+    )
+  }
+
   return (
     <WeatherContainer>
       <ScrollView>
         <Forecast
           title="Daily"
-          forecastItem={DailyForecastItem}
-          dailyItems={weather.daily.data}
+          renderItem={renderDailyItem}
+          forecastItems={weather.daily.data}
         />
       </ScrollView>
     </WeatherContainer>

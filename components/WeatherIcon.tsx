@@ -1,10 +1,10 @@
-import * as _ from 'lodash'
 import React from 'react'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { StyleSheet } from 'react-native'
 
 interface WeatherIconProps {
   name: string
+  size?: number
 }
 
 export function renderIcon(icon: string) {
@@ -23,21 +23,29 @@ export function renderIcon(icon: string) {
 }
 
 function WeatherIcon(props: WeatherIconProps) {
+  const iconSize = props.size || 50
+
   if (props.name == 'partly-cloudy-night') {
-    return <Ionicons name="md-cloudy-night" style={styles.iconImage} />
+    return (
+      <Ionicons
+        name="md-cloudy-night"
+        style={styles.iconImage}
+        size={iconSize}
+      />
+    )
   }
 
   return (
     <MaterialCommunityIcons
       style={styles.iconImage}
       name={renderIcon(props.name)}
+      size={iconSize}
     />
   )
 }
 
 const styles = StyleSheet.create({
   iconImage: {
-    fontSize: 50,
     color: 'white',
   },
 })

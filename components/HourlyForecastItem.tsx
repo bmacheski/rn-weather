@@ -1,30 +1,32 @@
-import * as _ from 'lodash'
 import * as moment from 'moment'
 import React from 'react'
-import WeatherIcon from './WeatherIcon'
-import { Currently } from '../types'
-import { StyleSheet, Text, View } from 'react-native'
 import Temperature from './Temperature'
+import WeatherIcon from './WeatherIcon'
+import { StyleSheet, Text, View } from 'react-native'
 
-function HourlyForecastItem(props: { item: Currently }) {
-  const { item } = props
+interface HourlyForecastItemProps {
+  temperature: number
+  icon: string
+  time: number
+}
+
+const HourlyForecastItem = React.memo((props: HourlyForecastItemProps) => {
+  const { temperature, icon, time } = props
 
   return (
     <View style={styles.itemContainer}>
       <View style={styles.dayContainer}>
-        <Text style={styles.text}>
-          {moment.unix(item.time).format('hh:mm A')}
-        </Text>
+        <Text style={styles.text}>{moment.unix(time).format('hh:mm A')}</Text>
       </View>
       <View style={[styles.iconContainer, { alignItems: 'center' }]}>
-        <WeatherIcon name={item.icon} />
+        <WeatherIcon name={icon} />
         <Text style={[styles.text]}>
-          <Temperature degrees={item.temperature} />
+          <Temperature degrees={temperature} />
         </Text>
       </View>
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   itemContainer: {
