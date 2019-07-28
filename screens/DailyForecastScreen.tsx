@@ -4,7 +4,7 @@ import React from 'react'
 import WeatherContainer from '../containers/WeatherContainer'
 import { DailyDatum } from '../types/weather'
 import { useWeather } from '../providers/WeatherProvider'
-import { ScrollView } from 'react-native-gesture-handler'
+import { ScrollView } from 'react-native'
 
 function DailyForecastScreen() {
   const { weather } = useWeather()

@@ -4,6 +4,7 @@ import React from 'react'
 import { LocationResult } from '../types/geocode'
 import { useWeather } from '../providers/WeatherProvider'
 import { Ionicons } from '@expo/vector-icons'
+import { useDebouncedCallback } from 'use-debounce'
 import {
   Modal,
   StyleSheet,
@@ -30,7 +31,7 @@ function SearchModal(props: SearchModalProps) {
   const { visible, onToggleModal } = props
 
   async function handleInputChange() {
-    if (!/^\w+$/.test(input) || !input || (input && input.length < 5)) return
+    if (!/^\w+$/.test(input) || !input || (input && input.length < 3)) return
     try {
       const res = await GeocodeApi.autocomplete(input)
       const geocodedResults = res && res.length ? res : []
@@ -38,6 +39,10 @@ function SearchModal(props: SearchModalProps) {
     } finally {
     }
   }
+
+  const [debouncedHandleInputChange] = useDebouncedCallback(() => {
+    handleInputChange()
+  }, 300)
 
   function onCitySelect(lat: string, long: string) {
     const latitude = +lat
@@ -58,7 +63,7 @@ function SearchModal(props: SearchModalProps) {
   }
 
   React.useEffect(() => {
-    handleInputChange()
+    debouncedHandleInputChange()
   }, [input])
 
   return (
