@@ -40,10 +40,15 @@ export function WeatherProvider(props: WeatherProviderProps) {
 
   const [error, setError] = React.useState<string>('')
 
+  function handleError(message?: string) {
+    message = message || 'Uh oh. An error occurred.'
+    setError(message)
+  }
+
   async function geolocate() {
     let { status } = await Permissions.askAsync(Permissions.LOCATION)
     if (status !== 'granted') {
-      setError('Permission to access location was denied!')
+      handleError('Permission to access location was denied!')
     }
 
     let location = await Location.getCurrentPositionAsync({})
@@ -63,7 +68,7 @@ export function WeatherProvider(props: WeatherProviderProps) {
       const locationDetails = await GeocodeApi.lookup(latitude, longitude)
       setLocation(locationDetails)
     } catch (err) {
-      setError('Uh oh. An error occurred.')
+      handleError()
     } finally {
       setLoading(false)
     }

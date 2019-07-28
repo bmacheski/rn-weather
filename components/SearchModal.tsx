@@ -4,7 +4,6 @@ import React from 'react'
 import { LocationResult } from '../types/geocode'
 import { useWeather } from '../providers/WeatherProvider'
 import { Ionicons } from '@expo/vector-icons'
-import { TouchableOpacity } from 'react-native-gesture-handler'
 import {
   Modal,
   StyleSheet,
@@ -12,6 +11,8 @@ import {
   View,
   Text,
   FlatList,
+  TouchableOpacity,
+  SafeAreaView,
 } from 'react-native'
 
 interface SearchModalProps {
@@ -62,7 +63,7 @@ function SearchModal(props: SearchModalProps) {
 
   return (
     <Modal animationType="slide" transparent={false} visible={visible}>
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.searchRow}>
           <Ionicons name="md-search" size={26} styles={styles.searchIcon} />
           <TextInput
@@ -75,16 +76,12 @@ function SearchModal(props: SearchModalProps) {
             style={styles.searchInput}
             autoCapitalize="none"
           />
-          <Ionicons
-            name="md-close"
-            size={26}
-            onPress={onToggleModal}
-            style={{ flex: 1 }}
-          />
+          <Ionicons name="md-close" size={26} onPress={onToggleModal} />
         </View>
         <View style={styles.searchResults}>
           <FlatList
             data={results}
+            keyboardShouldPersistTaps="handled"
             keyExtractor={(_, index) => 'item' + index}
             renderItem={({ item }) => (
               <TouchableOpacity
@@ -94,14 +91,13 @@ function SearchModal(props: SearchModalProps) {
             )}
           />
         </View>
-      </View>
+      </SafeAreaView>
     </Modal>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
     flex: 1,
   },
   searchIcon: { alignItems: 'center' },
@@ -110,7 +106,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 3,
     height: 45,
-    marginTop: 20,
     marginHorizontal: 10,
     padding: 10,
     flexGrow: 5,
@@ -118,13 +113,12 @@ const styles = StyleSheet.create({
     width: '65%',
   },
   searchResults: {
-    flex: 10,
-    paddingHorizontal: 30,
+    flex: 14,
   },
   searchRow: {
     flexDirection: 'row',
     flex: 1,
-    padding: 3,
+    padding: 20,
     justifyContent: 'center',
     alignItems: 'baseline',
   },
@@ -137,14 +131,13 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderBottomWidth: 0,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 1,
     fontSize: 20,
     marginTop: -1,
     justifyContent: 'space-around',
     padding: 10,
+    backgroundColor: 'white',
     marginBottom: 10,
     marginRight: 10,
     marginLeft: 10,

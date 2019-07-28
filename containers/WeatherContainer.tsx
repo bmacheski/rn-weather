@@ -3,7 +3,14 @@ import ConditionsHeader from '../components/ConditionsHeader'
 import React from 'react'
 import SearchModal from '../components/SearchModal'
 import { useWeather } from '../providers/WeatherProvider'
-import { ActivityIndicator, StyleSheet, View } from 'react-native'
+import {
+  ActivityIndicator,
+  StyleSheet,
+  View,
+  SafeAreaView,
+  Platform,
+  StatusBar,
+} from 'react-native'
 
 interface ContainerProps {
   children: React.ReactNode
@@ -32,7 +39,7 @@ function Container(props: ContainerProps) {
   return (
     <React.Fragment>
       <SearchModal visible={modalVisible} onToggleModal={toggleSearchModal} />
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <ConditionsHeader
           toggleSearchModal={toggleSearchModal}
           name={location.address ? location.address.city : ''}
@@ -40,7 +47,7 @@ function Container(props: ContainerProps) {
         <View style={styles.content}>
           {loading || dataIsEmpty ? renderSpinner() : props.children}
         </View>
-      </View>
+      </SafeAreaView>
     </React.Fragment>
   )
 }
@@ -48,12 +55,11 @@ function Container(props: ContainerProps) {
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 0,
-    marginTop: 0,
-    paddingVertical: 80,
     paddingHorizontal: 10,
     backgroundColor: 'blue',
     justifyContent: 'center',
     flex: 1,
+    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
   },
   content: { flex: 29 },
   loadingIndicator: {

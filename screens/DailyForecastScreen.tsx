@@ -26,7 +26,7 @@ function DailyForecastScreen() {
         <Forecast
           title="Daily"
           renderItem={renderDailyItem}
-          forecastItems={weather.daily.data}
+          forecastItems={weather.daily ? weather.daily.data : []}
         />
       </ScrollView>
     </WeatherContainer>

@@ -25,7 +25,7 @@ function HourlyForecastScreen() {
         <Forecast
           title="Hourly"
           renderItem={renderHourlyItem}
-          forecastItems={weather.hourly.data}
+          forecastItems={weather.hourly ? weather.hourly.data : []}
         />
       </ScrollView>
     </WeatherContainer>
