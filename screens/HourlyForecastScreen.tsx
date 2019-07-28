@@ -1,4 +1,4 @@
-import Forecast from '../components/Forecast'
+import Forecast, { RenderForecastItem } from '../components/Forecast'
 import HourlyForecastItem from '../components/HourlyForecastItem'
 import React from 'react'
 import WeatherContainer from '../containers/WeatherContainer'
@@ -6,10 +6,10 @@ import { Currently } from '../types/weather'
 import { useWeather } from '../providers/WeatherProvider'
 import { ScrollView } from 'react-native-gesture-handler'
 
-function HourlyScreen() {
+function HourlyForecastScreen() {
   const { weather } = useWeather()
 
-  function renderHourlyItem({ item }: { item: Currently }) {
+  const renderHourlyItem: RenderForecastItem<Currently> = item => {
     return (
       <HourlyForecastItem
         icon={item.icon}
@@ -32,4 +32,4 @@ function HourlyScreen() {
   )
 }
 
-export default HourlyScreen
+export default HourlyForecastScreen

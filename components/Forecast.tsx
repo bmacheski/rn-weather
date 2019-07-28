@@ -1,13 +1,15 @@
-import React, { ReactNode, ReactElement } from 'react'
+import React, { ReactElement } from 'react'
 import { FlatList, StyleSheet, Text } from 'react-native'
 
-interface ForecastProps {
-  forecastItems: any[]
+export type RenderForecastItem<T> = (item: T) => ReactElement
+
+export interface ForecastProps<T> {
+  forecastItems: T[]
   title: string
-  renderItem: (item: any) => ReactElement
+  renderItem: RenderForecastItem<T>
 }
 
-function Forecast(props: ForecastProps) {
+function Forecast<T>(props: ForecastProps<T>) {
   function renderHeader() {
     return <Text style={styles.text}>{props.title} Forecast</Text>
   }
@@ -17,7 +19,7 @@ function Forecast(props: ForecastProps) {
       data={props.forecastItems}
       ListHeaderComponent={renderHeader()}
       keyExtractor={(_, index) => 'forecast' + index}
-      renderItem={props.renderItem}
+      renderItem={({ item }) => props.renderItem(item)}
     />
   )
 }

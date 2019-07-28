@@ -4,7 +4,8 @@ import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import * as WeatherApi from '../api/weather'
 import React from 'react'
-import { LocationLookup, Weather } from '../types'
+import { LocationLookup } from '../types/geocode'
+import { Weather } from '../types/weather'
 
 interface WeatherProviderProps {
   children?: React.ReactNode
@@ -21,9 +22,7 @@ interface WeatherProviderState {
 const defaultValue: WeatherProviderState = {
   error: '',
   loading: false,
-  weather: {
-    currently: null,
-  },
+  weather: {},
   location: {},
   setCoordinates: _.noop,
 }

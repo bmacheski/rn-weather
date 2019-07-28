@@ -1,7 +1,7 @@
-import DailyScreen from '../screens/DailyScreen'
-import HourlyScreen from '../screens/HourlyScreen'
+import CurrentConditionsScreen from '../screens/CurrentConditonsScreen'
+import DailyForecastScreen from '../screens/DailyForecastScreen'
+import HourlyForecastScreen from '../screens/HourlyForecastScreen'
 import React from 'react'
-import TodayScreen from '../screens/TodayScreen'
 import { createAppContainer, createBottomTabNavigator } from 'react-navigation'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import { Platform } from 'react-native'
@@ -26,7 +26,7 @@ const AppNavigator = createBottomTabNavigator(
   {
     Today: {
       path: '',
-      screen: TodayScreen,
+      screen: CurrentConditionsScreen,
       navigationOptions: {
         tabBarIcon: ({ focused }) => (
           <TabBarIcon
@@ -38,7 +38,7 @@ const AppNavigator = createBottomTabNavigator(
     },
     Hourly: {
       path: 'hourly',
-      screen: HourlyScreen,
+      screen: HourlyForecastScreen,
       navigationOptions: {
         tabBarIcon: ({ focused }) => (
           <TabBarIcon focused={focused} name="md-time" />
@@ -47,7 +47,7 @@ const AppNavigator = createBottomTabNavigator(
     },
     Daily: {
       path: 'daily',
-      screen: DailyScreen,
+      screen: DailyForecastScreen,
       navigationOptions: {
         tabBarIcon: ({ focused }) => (
           <MaterialCommunityIcons

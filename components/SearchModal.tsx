@@ -46,9 +46,12 @@ function SearchModal(props: SearchModalProps) {
   }
 
   function renderSearchItem(item: LocationResult) {
+    const { address } = item
+    const city = address.city ? `${address.city},` : ''
+    const name = address.name ? `${address.name},` : ''
     return (
       <Text style={styles.searchItem}>
-        {item.address.name}, {item.address.city}, {item.address.state}
+        {name} {city} {item.address.state}
       </Text>
     )
   }
@@ -81,7 +84,7 @@ function SearchModal(props: SearchModalProps) {
         </View>
         <View style={styles.searchResults}>
           <FlatList
-            data={results || []}
+            data={results}
             keyExtractor={(_, index) => 'item' + index}
             renderItem={({ item }) => (
               <TouchableOpacity

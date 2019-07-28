@@ -8,7 +8,7 @@ interface WeatherIconProps {
 }
 
 export function renderIcon(icon: string) {
-  const dict = {
+  return {
     'clear-day': 'weather-sunny',
     rain: 'weather-rainy',
     sleet: 'weather-hail',
@@ -17,9 +17,7 @@ export function renderIcon(icon: string) {
     cloudy: 'weather-cloudy',
     'partly-cloudy-day': 'weather-partlycloudy',
     'clear-night': 'weather-night',
-  }
-
-  return dict[icon]
+  }[icon]
 }
 
 function WeatherIcon(props: WeatherIconProps) {

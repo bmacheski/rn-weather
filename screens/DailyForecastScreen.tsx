@@ -1,15 +1,15 @@
 import DailyForecastItem from '../components/DailyForecastItem'
-import Forecast from '../components/Forecast'
+import Forecast, { RenderForecastItem } from '../components/Forecast'
 import React from 'react'
 import WeatherContainer from '../containers/WeatherContainer'
 import { DailyDatum } from '../types/weather'
 import { useWeather } from '../providers/WeatherProvider'
 import { ScrollView } from 'react-native-gesture-handler'
 
-function DailyScreen() {
+function DailyForecastScreen() {
   const { weather } = useWeather()
 
-  function renderDailyItem({ item }: { item: DailyDatum }) {
+  const renderDailyItem: RenderForecastItem<DailyDatum> = item => {
     return (
       <DailyForecastItem
         icon={item.icon}
@@ -33,4 +33,4 @@ function DailyScreen() {
   )
 }
 
-export default DailyScreen
+export default DailyForecastScreen

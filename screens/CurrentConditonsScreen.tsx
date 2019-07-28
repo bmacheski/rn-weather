@@ -5,14 +5,14 @@ import WeatherContainer from '../containers/WeatherContainer'
 import { Currently } from '../types/weather'
 import { useWeather } from '../providers/WeatherProvider'
 
-function TodayScreen() {
+function CurrentConditionsScreen() {
   const { weather } = useWeather()
   const { currently = {} as Currently } = weather
 
   return (
     <WeatherContainer>
       <Conditions
-        icon={currently.icon || ''}
+        icon={currently.icon}
         rainChance={currently.precipProbability}
         temperature={currently.temperature}
       />
@@ -20,4 +20,4 @@ function TodayScreen() {
   )
 }
 
-export default TodayScreen
+export default CurrentConditionsScreen
