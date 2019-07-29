@@ -17,7 +17,7 @@ export interface LocationResult {
 
 export interface Address {
   name: string
-  state: State
+  state: string
   country: Country
   country_code: CountryCode
   postcode: string
@@ -34,11 +34,6 @@ export enum Country {
 
 export enum CountryCode {
   Us = 'us',
-}
-
-export enum State {
-  Illinois = 'Illinois',
-  Tennessee = 'Tennessee',
 }
 
 export enum OsmType {
