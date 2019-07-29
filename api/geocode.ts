@@ -1,5 +1,5 @@
 import * as _ from 'lodash'
-import { LocationResult } from '../types/geocode'
+import { LocationResult, LocationLookup } from '../types/geocode'
 import { GEOCODE_API_KEY as api_key } from 'react-native-dotenv'
 
 function filterAutocompleteResults(results: LocationResult[]) {
@@ -16,6 +16,6 @@ export async function autocomplete(query: string) {
 export async function lookup(lat: number, long: number) {
   const url = `https://us1.locationiq.com/v1/reverse.php?key=${api_key}&lat=${lat}&lon=${long}&format=json`
   const response = await fetch(`${url}`)
-  const res = await response.json()
+  const res = (await response.json()) as LocationLookup
   return res
 }
