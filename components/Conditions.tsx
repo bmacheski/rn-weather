@@ -25,7 +25,7 @@ const Conditions = React.memo((props: ConditionsProps) => {
           </View>
           <View>
             <Text style={styles.rainchance}>
-              There is a {Math.round(rainChance)}% chance of rain today.
+              There is a {Math.round(rainChance * 100)}% chance of rain today.
             </Text>
           </View>
         </View>
